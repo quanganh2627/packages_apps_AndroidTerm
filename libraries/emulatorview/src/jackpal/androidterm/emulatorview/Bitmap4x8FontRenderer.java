@@ -26,6 +26,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import jackpal.androidterm.R;
 
 
 class Bitmap4x8FontRenderer extends BaseTextRenderer {
