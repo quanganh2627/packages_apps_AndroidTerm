@@ -29,6 +29,6 @@ LOCAL_SRC_FILES:= \
   termExec.cpp \
   fileCompat.cpp
 
-LOCAL_LDLIBS := -ldl -llog
+LOCAL_SHARED_LIBRARIES += liblog
 
 include $(BUILD_SHARED_LIBRARY)

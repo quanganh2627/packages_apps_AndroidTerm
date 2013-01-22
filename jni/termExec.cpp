@@ -103,20 +103,20 @@ static int create_subprocess(const char *cmd,
 
     ptm = open("/dev/ptmx", O_RDWR); // | O_NOCTTY);
     if(ptm < 0){
-        LOGE("[ cannot open /dev/ptmx - %s ]\n",strerror(errno));
+        ALOGE("[ cannot open /dev/ptmx - %s ]\n",strerror(errno));
         return -1;
     }
     fcntl(ptm, F_SETFD, FD_CLOEXEC);
 
     if(grantpt(ptm) || unlockpt(ptm) ||
        ((devname = (char*) ptsname(ptm)) == 0)){
-        LOGE("[ trouble with /dev/ptmx - %s ]\n", strerror(errno));
+        ALOGE("[ trouble with /dev/ptmx - %s ]\n", strerror(errno));
         return -1;
     }
 
     pid = fork();
     if(pid < 0) {
-        LOGE("- fork failed: %s -\n", strerror(errno));
+        ALOGE("- fork failed: %s -\n", strerror(errno));
         return -1;
     }
 
@@ -237,7 +237,7 @@ static jobject android_os_Exec_createSubProcess(JNIEnv *env, jobject clazz,
     jobject result = env->NewObject(class_fileDescriptor, method_fileDescriptor_init);
 
     if (!result) {
-        LOGE("Couldn't create a FileDescriptor.");
+        ALOGE("Couldn't create a FileDescriptor.");
     }
     else {
         env->SetIntField(result, field_fileDescriptor_descriptor, ptm);
@@ -323,7 +323,7 @@ static int register_FileDescriptor(JNIEnv *env)
     jclass localRef_class_fileDescriptor = env->FindClass("java/io/FileDescriptor");
 
     if (localRef_class_fileDescriptor == NULL) {
-        LOGE("Can't find class java/io/FileDescriptor");
+        ALOGE("Can't find class java/io/FileDescriptor");
         return -1;
     }
 
@@ -332,20 +332,20 @@ static int register_FileDescriptor(JNIEnv *env)
     env->DeleteLocalRef(localRef_class_fileDescriptor);
 
     if (class_fileDescriptor == NULL) {
-        LOGE("Can't get global ref to class java/io/FileDescriptor");
+        ALOGE("Can't get global ref to class java/io/FileDescriptor");
         return -1;
     }
 
     field_fileDescriptor_descriptor = env->GetFieldID(class_fileDescriptor, "descriptor", "I");
 
     if (field_fileDescriptor_descriptor == NULL) {
-        LOGE("Can't find FileDescriptor.descriptor");
+        ALOGE("Can't find FileDescriptor.descriptor");
         return -1;
     }
 
     method_fileDescriptor_init = env->GetMethodID(class_fileDescriptor, "<init>", "()V");
     if (method_fileDescriptor_init == NULL) {
-        LOGE("Can't find FileDescriptor.init");
+        ALOGE("Can't find FileDescriptor.init");
         return -1;
      }
      return 0;
@@ -369,7 +369,7 @@ static JNINativeMethod method_table[] = {
 
 int init_Exec(JNIEnv *env) {
     if (register_FileDescriptor(env) < 0) {
-        LOGE("Failed to register class java/io/FileDescriptor");
+        ALOGE("Failed to register class java/io/FileDescriptor");
         return JNI_FALSE;
     }
 
